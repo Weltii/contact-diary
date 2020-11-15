@@ -43,6 +43,7 @@
       </li>
     </ul>
     <button v-on:click="addContactName()">+ Contact</button>
+    <button v-on:click="removeContact">Remove Contact</button>
   </li>
 </template>
 
@@ -62,6 +63,10 @@ export default class Contact extends Vue {
       key: field,
       value: value
     });
+  }
+
+  removeContact() {
+    this.$store.commit(MutationTypes.REMOVE_CONTACT, this.contact);
   }
 
   changeContactName(event: any) {

@@ -27,7 +27,8 @@ export enum MutationTypes {
   ADD_NEW_CONTACT_NAME = "ADD_NEW_CONTACT_NAME",
   CHANGE_CONTACT_NAME = "CHANGE_CONTACT_NAME",
   CHANGE_FIELD = "CHANGE_FIELD",
-  INIT_STORE = "INIT_STORE"
+  INIT_STORE = "INIT_STORE",
+  REMOVE_CONTACT = "REMOVE_CONTACT"
 }
 
 export default new Vuex.Store({
@@ -88,6 +89,10 @@ export default new Vuex.Store({
     ) {
       const index = state.contacts.indexOf(payload.contact);
       state.contacts[index][payload.key] = payload.value;
+    },
+    REMOVE_CONTACT(state: any, contact: ContactInformation) {
+      const index = state.contacts.indexOf(contact);
+      state.contacts.splice(index, 1);
     }
   },
   actions: {},

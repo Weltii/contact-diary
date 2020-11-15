@@ -26,7 +26,8 @@ export enum MutationTypes {
   CHANGE_DATE = "CHANG_DATE",
   ADD_NEW_CONTACT_NAME = "ADD_NEW_CONTACT_NAME",
   CHANGE_CONTACT_NAME = "CHANGE_CONTACT_NAME",
-  CHANGE_FIELD = "CHANGE_FIELD"
+  CHANGE_FIELD = "CHANGE_FIELD",
+  INIT_STORE = "INIT_STORE"
 }
 
 export default new Vuex.Store({
@@ -34,6 +35,15 @@ export default new Vuex.Store({
     contacts: [new ContactInformation(["Herbert", "von", "Schlechter"])]
   },
   mutations: {
+    INIT_STORE(state: any) {
+      if (localStorage.getItem("store")) {
+        // Replace the state object with the stored item
+        const storeState: string = localStorage.getItem("store") ?? "";
+        if (storeState) {
+          this.replaceState(Object.assign(state, JSON.parse(storeState)));
+        }
+      }
+    },
     ADD_CONTACT(state: any, payload: string) {
       state.contacts.push(payload);
     },

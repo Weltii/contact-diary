@@ -3,7 +3,13 @@
     <li v-if="contacts.length == 0">
       No contact found, please a new one!
     </li>
-    <Contact v-for="contact in contacts" :key="contact.id" :contact="contact" />
+    <Contact
+      v-for="(contact, index) in contacts"
+      :id="index"
+      :key="contact.id"
+      :contact="contact"
+      :collapsed="index != 0"
+    />
   </ul>
 </template>
 
@@ -35,8 +41,5 @@ ul {
 li {
   display: block;
   margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>

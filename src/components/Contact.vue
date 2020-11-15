@@ -1,59 +1,79 @@
 <template>
-  <li class="contact-information">
-    <div>
-      Start
-      <Datetime
-        v-model="startDate"
-        :value="startDate"
-        type="datetime"
-        format="yyyy-MM-dd HH:mm:ss"
-      />
+  <li :class="styles">
+    <div class="head">
+      <button v-on:click="setCollapseState">{{ expandText }}</button>
+      <div>
+        <label for="start-date">Start</label>
+        <Datetime
+          v-model="startDate"
+          type="datetime"
+          format="yyyy-MM-dd HH:mm:ss"
+          name="start-date"
+        />
+      </div>
+      <div>
+        <label for="end-date">End</label>
+        <Datetime
+          v-model="endDate"
+          type="datetime"
+          format="yyyy-MM-dd HH:mm:ss"
+          name="end-date"
+        />
+      </div>
+      <div>
+        <label for="duration">Duration</label>
+        <input
+          type="time"
+          :value="duration"
+          name="duration"
+          required
+          disabled
+        />
+      </div>
+
+      <button class="delete-button" v-on:click="removeContact">
+        Remove Contact
+      </button>
     </div>
-    <div>
-      End
-      <Datetime
-        v-model="endDate"
-        type="datetime"
-        format="yyyy-MM-dd HH:mm:ss"
-      />
+
+    <div class="body">
+      <div>
+        <div>
+          What did you do?
+          <input
+            type="text"
+            field="activity"
+            :value="contact.activity"
+            v-on:change="changeFieldName"
+          />
+        </div>
+        <div>
+          Where are you?
+          <input
+            type="text"
+            field="location"
+            :value="contact.location"
+            v-on:change="changeFieldName"
+          />
+        </div>
+      </div>
+      <div>
+        <h3>Contacts</h3>
+        <ul>
+          <li
+            v-for="(contact, index) in contact.contacts"
+            :key="index"
+            v-on:change="changeContactName"
+          >
+            <input type="" :id="index" :value="contact" />
+            <button v-if="index !== 0" v-on:click="removeContactName(index)">
+              REMOVE
+            </button>
+          </li>
+        </ul>
+        <button v-on:click="addContactName()">+ Contact</button>
+      </div>
     </div>
-    <div>
-      Duration
-      <input type="time" :value="duration" />
-    </div>
-    <div>
-      What did you do?
-      <input
-        type="text"
-        field="activity"
-        :value="contact.activity"
-        v-on:change="changeFieldName"
-      />
-    </div>
-    <div>
-      Where are you?
-      <input
-        type="text"
-        field="location"
-        :value="contact.location"
-        v-on:change="changeFieldName"
-      />
-    </div>
-    <h3>Contacts</h3>
-    <ul>
-      <li
-        v-for="(contact, index) in contact.contacts"
-        :key="index"
-        v-on:change="changeContactName"
-      >
-        <input type="text" :id="index" :value="contact" />
-        <button v-if="index !== 0" v-on:click="removeContactName(index)">
-          REMOVE
-        </button>
-      </li>
-    </ul>
-    <button v-on:click="addContactName()">+ Contact</button>
-    <button v-on:click="removeContact">Remove Contact</button>
   </li>
 </template>
 
@@ -71,6 +91,7 @@ import { DateTime } from "luxon";
 })
 export default class Contact extends Vue {
   @Prop() private contact!: ContactInformation;
+  @Prop() private collapsed!: boolean;
 
   changeFieldName(event: any) {
     const value = event.target.value;
@@ -107,6 +128,18 @@ export default class Contact extends Vue {
     this.$store.commit(MutationTypes.ADD_NEW_CONTACT_NAME, {
       contact: this.contact
     });
+  }
+
+  get styles() {
+    return `contact-information ${this.collapsed ? "collapsed" : ""}`;
+  }
+
+  get expandText() {
+    return `${this.collapsed ? "Expand" : "Collapse"}`;
+  }
+
+  setCollapseState() {
+    this.collapsed = !this.collapsed;
   }
 
   get duration() {
@@ -154,13 +187,37 @@ export default class Contact extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+.contact-information {
+  margin: 1rem 0;
 }
 
-.contact-information {
-  border: 1px solid lightgray;
-  padding: 1rem;
+.head {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(220, 54, 100);
+  padding: 0.2rem;
+  margin-bottom: 0.5rem;
+  div,
+  input,
+  label {
+    display: block;
+    margin: 0 0.2rem;
+  }
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;
+  transition: 1s ease-in-out;
+}
+
+.collapsed .body {
+  height: 0px;
 }
 
 ul {
@@ -170,8 +227,5 @@ ul {
 li {
   display: block;
   margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>

@@ -39,6 +39,8 @@ nav {
   display: block;
   bottom: 0;
   width: 100%;
+  box-shadow: 5px 0 5px gray;
+
   div {
     position: relative;
     left: 50%;

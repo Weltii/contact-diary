@@ -1,15 +1,21 @@
 <template>
   <li class="contact-information">
-    <h3>Contacts</h3>
     <div>
       Start
-      <input type="date" t="start" :value="startDate" />
-      <input type="time" t="start" :value="startTime" />
+      <Datetime
+        v-model="startDate"
+        :value="startDate"
+        type="datetime"
+        format="yyyy-MM-dd HH:mm:ss"
+      />
     </div>
     <div>
       End
-      <input type="date" t="end" :value="endDate" />
-      <input type="time" t="end" :value="endTime" />
+      <Datetime
+        v-model="endDate"
+        type="datetime"
+        format="yyyy-MM-dd HH:mm:ss"
+      />
     </div>
     <div>
       Duration
@@ -33,6 +39,7 @@
         v-on:change="changeFieldName"
       />
     </div>
+    <h3>Contacts</h3>
     <ul>
       <li
         v-for="(contact, index) in contact.contacts"
@@ -40,6 +47,9 @@
         v-on:change="changeContactName"
       >
         <input type="text" :id="index" :value="contact" />
+        <button v-if="index !== 0" v-on:click="removeContactName(index)">
+          REMOVE
+        </button>
       </li>
     </ul>
     <button v-on:click="addContactName()">+ Contact</button>
@@ -50,8 +60,15 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { ContactInformation, MutationTypes } from "../store";
+import { Datetime } from "vue-datetime";
+import "vue-datetime/dist/vue-datetime.css";
+import { DateTime } from "luxon";
 
-@Component
+@Component({
+  components: {
+    Datetime
+  }
+})
 export default class Contact extends Vue {
   @Prop() private contact!: ContactInformation;
 
@@ -79,38 +96,51 @@ export default class Contact extends Vue {
     });
   }
 
+  removeContactName(index: number) {
+    this.$store.commit(MutationTypes.REMOVE_CONTACT_NAME, {
+      contact: this.contact,
+      nameIndex: index
+    });
+  }
+
   addContactName() {
     this.$store.commit(MutationTypes.ADD_NEW_CONTACT_NAME, {
       contact: this.contact
     });
   }
 
-  getDate(date: Date) {
+  get duration() {
     return "";
+  }
+
+  getDate(date: number) {
+    return DateTime.fromMillis(date).toString();
+  }
+
+  setDate(date: string, key: string) {
+    if (!date) return;
+    this.$store.commit(MutationTypes.CHANGE_FIELD, {
+      contact: this.contact,
+      key: key,
+      value: DateTime.fromISO(date).toMillis()
+    });
   }
 
   get startDate() {
-    return "";
+    return this.getDate(this.contact.start);
+  }
+
+  set startDate(date) {
+    this.setDate(date, "start");
   }
 
   get endDate() {
-    return "";
+    if (!this.contact.end) return "";
+    return this.getDate(this.contact.start);
   }
 
-  getTime(date: Date) {
-    return ";";
-  }
-
-  get startTime() {
-    return "";
-  }
-
-  get endTime() {
-    return "";
-  }
-
-  get duration() {
-    return "";
+  set endDate(date) {
+    this.setDate(date, "end");
   }
 }
 </script>

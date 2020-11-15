@@ -1,5 +1,8 @@
 <template>
   <ul>
+    <li v-if="contacts.length == 0">
+      No contact found, please a new one!
+    </li>
     <Contact v-for="contact in contacts" :key="contact.id" :contact="contact" />
   </ul>
 </template>

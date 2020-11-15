@@ -1,17 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { DateTime } from "luxon";
 
 Vue.use(Vuex);
-
+// DATETIME_FULL
 export class ContactInformation {
   constructor(
     public contacts: Array<string> = [""],
     public id: string = ContactInformation.genId(),
-    public start: Date = new Date(),
-    public end: Date | null = null,
-    public activity: string = "Nothing",
-    public location: string = "At Home"
+    public start: number = ContactInformation.genDate(),
+    public end: number | null = null,
+    public activity: string = "",
+    public location: string = ""
   ) {}
+
+  public static genDate(date: Date = new Date()) {
+    return DateTime.local().toMillis();
+  }
 
   public static genId() {
     const randomString = function() {
@@ -23,12 +28,12 @@ export class ContactInformation {
 
 export enum MutationTypes {
   ADD_CONTACT = "ADD_CONTACT",
-  CHANGE_DATE = "CHANG_DATE",
   ADD_NEW_CONTACT_NAME = "ADD_NEW_CONTACT_NAME",
   CHANGE_CONTACT_NAME = "CHANGE_CONTACT_NAME",
   CHANGE_FIELD = "CHANGE_FIELD",
   INIT_STORE = "INIT_STORE",
-  REMOVE_CONTACT = "REMOVE_CONTACT"
+  REMOVE_CONTACT = "REMOVE_CONTACT",
+  REMOVE_CONTACT_NAME = "REMOVE_CONTACT_NAME"
 }
 
 export default new Vuex.Store({
@@ -48,17 +53,6 @@ export default new Vuex.Store({
     ADD_CONTACT(state: any, payload: string) {
       state.contacts.push(payload);
     },
-    CHANGE_DATE(
-      state: any,
-      payload: {
-        contact: ContactInformation;
-        isStart: boolean;
-        date: Date;
-      }
-    ) {
-      const index = state.contacts.indexOf(payload.contact);
-      state.contacts[index].start = payload.date;
-    },
     ADD_NEW_CONTACT_NAME(
       state: any,
       payload: {
@@ -67,6 +61,16 @@ export default new Vuex.Store({
     ) {
       const index = state.contacts.indexOf(payload.contact);
       state.contacts[index].contacts.push("");
+    },
+    REMOVE_CONTACT_NAME(
+      state: any,
+      payload: {
+        contact: ContactInformation;
+        nameIndex: number;
+      }
+    ) {
+      const index = state.contacts.indexOf(payload.contact);
+      state.contacts[index].contacts.splice(payload.nameIndex, 1);
     },
     CHANGE_CONTACT_NAME(
       state: any,

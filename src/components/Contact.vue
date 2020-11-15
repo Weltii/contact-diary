@@ -110,7 +110,14 @@ export default class Contact extends Vue {
   }
 
   get duration() {
-    return "";
+    const diff =
+      ((this.contact.end ?? new Date().getTime()) - this.contact.start) / 1000;
+    const hour = Math.floor(diff / 3600);
+    const min = (diff % 3600) / 60;
+    const dateString = `${hour < 10 ? "0" + hour : hour}:${
+      min < 10 ? "0" + min : min
+    }`;
+    return dateString;
   }
 
   getDate(date: number) {
@@ -136,7 +143,7 @@ export default class Contact extends Vue {
 
   get endDate() {
     if (!this.contact.end) return "";
-    return this.getDate(this.contact.start);
+    return this.getDate(this.contact.end);
   }
 
   set endDate(date) {

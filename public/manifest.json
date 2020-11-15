@@ -1,0 +1,7 @@
+{
+  "name": "Contact Diary",
+  "short_name": "ConDir",
+  "lang": "de",
+  "start_url": "/",
+  "display": "standalone"
+}

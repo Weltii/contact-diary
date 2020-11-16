@@ -7,6 +7,7 @@
       <div>
         <router-link to="/">Home</router-link>
         <router-link to="/contacts">Contacts</router-link>
+        <router-link to="/myself">Myself</router-link>
         <router-link to="/about">About</router-link>
       </div>
     </nav>

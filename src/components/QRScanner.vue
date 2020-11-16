@@ -66,6 +66,7 @@ export default class QRScanner extends Vue {
       });
       if (code) {
         this.content = code;
+        requestAnimationFrame(this.scan);
       } else {
         requestAnimationFrame(this.scan);
       }

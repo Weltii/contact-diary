@@ -21,6 +21,13 @@ export class ContactInformation {
   }
 }
 
+export class ContactData {
+  constructor(
+    public name: string = "Empty",
+    public phoneNumber: string = "-"
+  ) {}
+}
+
 export enum MutationTypes {
   ADD_CONTACT = "ADD_CONTACT",
   ADD_NEW_CONTACT_NAME = "ADD_NEW_CONTACT_NAME",
@@ -28,7 +35,8 @@ export enum MutationTypes {
   CHANGE_FIELD = "CHANGE_FIELD",
   INIT_STORE = "INIT_STORE",
   REMOVE_CONTACT = "REMOVE_CONTACT",
-  REMOVE_CONTACT_NAME = "REMOVE_CONTACT_NAME"
+  REMOVE_CONTACT_NAME = "REMOVE_CONTACT_NAME",
+  CHANGE_CONTACT_DETAIL = "CHANGE_CONTACT_DETAIL"
 }
 
 export default new Vuex.Store({

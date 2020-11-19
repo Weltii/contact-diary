@@ -2,21 +2,21 @@
   <div>
     <h1>Contacts</h1>
     <button v-on:click="addNewContact()">Add new Contact</button>
-    <ContactList />
+    <ContactEntryList />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import ContactList from "@/components/ContactList.vue";
+import ContactEntryList from "@/components/ContactEntryList.vue";
 import { MutationTypes, ContactInformation } from "../store";
 
 @Component({
   components: {
-    ContactList
+    ContactEntryList
   }
 })
-export default class Contacts extends Vue {
+export default class Entries extends Vue {
   addNewContact() {
     this.$store.commit(MutationTypes.ADD_CONTACT, new ContactInformation());
   }

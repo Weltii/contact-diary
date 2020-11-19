@@ -3,7 +3,7 @@
     <li v-if="contacts.length == 0">
       No contact found, please a new one!
     </li>
-    <Contact
+    <ContactEntry
       v-for="(contact, index) in contacts"
       :id="index"
       :key="contact.id"
@@ -15,16 +15,16 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Contact from "@/components/Contact.vue";
+import ContactEntry from "@/components/ContactEntry.vue";
 
 @Component({
   components: {
-    Contact
+    ContactEntry
   }
 })
-export default class ContactList extends Vue {
+export default class ContactEntryList extends Vue {
   get contacts() {
-    return this.$store.state.contacts.concat([]).reverse();
+    return this.$store.state.entries.concat([]).reverse();
   }
 }
 </script>

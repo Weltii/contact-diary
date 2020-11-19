@@ -1,13 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { DateTime } from "luxon";
+import { Contact } from "@/model/Contact";
+import { genId } from "../model/Utils";
 
 Vue.use(Vuex);
-// DATETIME_FULL
+
 export class ContactInformation {
   constructor(
     public contacts: Array<string> = [""],
-    public id: string = ContactInformation.genId(),
+    public id: string = genId(),
     public start: number = ContactInformation.genDate(),
     public end: number | null = null,
     public activity: string = "",
@@ -16,13 +18,6 @@ export class ContactInformation {
 
   public static genDate(date: Date = new Date()) {
     return DateTime.local().toMillis();
-  }
-
-  public static genId() {
-    const randomString = function() {
-      return Math.random().toString(16);
-    };
-    return `${new Date().getTime()}-${randomString()}`;
   }
 }
 
@@ -38,7 +33,9 @@ export enum MutationTypes {
 
 export default new Vuex.Store({
   state: {
-    contacts: [new ContactInformation(["Herbert", "von", "Schlechter"])]
+    version: "1.0",
+    contacts: {},
+    entries: [new ContactInformation(["Herbert", "von", "Schlechter"])]
   },
   mutations: {
     INIT_STORE(state: any) {
@@ -46,12 +43,23 @@ export default new Vuex.Store({
         // Replace the state object with the stored item
         const storeState: string = localStorage.getItem("store") ?? "";
         if (storeState) {
-          this.replaceState(Object.assign(state, JSON.parse(storeState)));
+          const json = JSON.parse(storeState);
+          if (json["version"]) {
+            this.replaceState(Object.assign(state, json));
+          } else {
+            const newJson = {
+              entries: json["contacts"],
+              contacts: [],
+              version: "1.0"
+            };
+            this.replaceState(Object.assign(state, newJson));
+            localStorage.setItem("store", JSON.stringify(state));
+          }
         }
       }
     },
     ADD_CONTACT(state: any, payload: string) {
-      state.contacts.push(payload);
+      state.entries.push(payload);
     },
     ADD_NEW_CONTACT_NAME(
       state: any,
@@ -59,8 +67,8 @@ export default new Vuex.Store({
         contact: ContactInformation;
       }
     ) {
-      const index = state.contacts.indexOf(payload.contact);
-      state.contacts[index].contacts.push("");
+      const index = state.entries.indexOf(payload.contact);
+      state.entries[index].contacts.push("");
     },
     REMOVE_CONTACT_NAME(
       state: any,
@@ -69,8 +77,8 @@ export default new Vuex.Store({
         nameIndex: number;
       }
     ) {
-      const index = state.contacts.indexOf(payload.contact);
-      state.contacts[index].contacts.splice(payload.nameIndex, 1);
+      const index = state.entries.indexOf(payload.contact);
+      state.entries[index].contacts.splice(payload.nameIndex, 1);
     },
     CHANGE_CONTACT_NAME(
       state: any,
@@ -80,8 +88,8 @@ export default new Vuex.Store({
         name: string;
       }
     ) {
-      const index = state.contacts.indexOf(payload.contact);
-      state.contacts[index].contacts[payload.nameIndex] = payload.name;
+      const index = state.entries.indexOf(payload.contact);
+      state.entries[index].contacts[payload.nameIndex] = payload.name;
     },
     CHANGE_FIELD(
       state: any,
@@ -91,12 +99,12 @@ export default new Vuex.Store({
         value: string;
       }
     ) {
-      const index = state.contacts.indexOf(payload.contact);
-      state.contacts[index][payload.key] = payload.value;
+      const index = state.entries.indexOf(payload.contact);
+      state.entries[index][payload.key] = payload.value;
     },
     REMOVE_CONTACT(state: any, contact: ContactInformation) {
-      const index = state.contacts.indexOf(contact);
-      state.contacts.splice(index, 1);
+      const index = state.entries.indexOf(contact);
+      state.entries.splice(index, 1);
     }
   },
   actions: {},

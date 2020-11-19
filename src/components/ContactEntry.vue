@@ -59,7 +59,7 @@
       </div>
       <div>
         <h3>Contacts</h3>
-        <ul>
+        <ul class="contact-list">
           <li
             v-for="(contact, index) in contact.contacts"
             :key="index"
@@ -79,7 +79,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { ContactInformation, MutationTypes } from "../store";
+import { MutationTypes, ContactInformation } from "../store";
 import { Datetime } from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 import { DateTime } from "luxon";
@@ -89,7 +89,7 @@ import { DateTime } from "luxon";
     Datetime
   }
 })
-export default class Contact extends Vue {
+export default class ContactEntry extends Vue {
   @Prop() private contact!: ContactInformation;
   @Prop() private collapsed!: boolean;
 

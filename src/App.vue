@@ -5,14 +5,42 @@
     </div>
     <nav>
       <div>
-        <router-link to="/">Home</router-link>
-        <router-link to="/entries">Entries</router-link>
-        <router-link to="/myself">Myself</router-link>
-        <router-link to="/about">About</router-link>
+        <router-link class="icon-button" to="/">
+          <BIconHouseFill title="Home" />
+        </router-link>
+        <router-link class="icon-button" to="/entries">
+          <BIconJournalMedical title="Contact Journal" />
+        </router-link>
+        <router-link class="icon-button" to="/myself">
+          <BIconFilePersonFill title="Your Profile" />
+        </router-link>
+        <router-link class="icon-button" to="/about">
+          <BIconInfoCircleFill title="About" />
+        </router-link>
       </div>
     </nav>
   </main>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import {
+  BIconJournalMedical,
+  BIconHouseFill,
+  BIconFilePersonFill,
+  BIconInfoCircleFill
+} from "bootstrap-vue";
+
+@Component({
+  components: {
+    BIconJournalMedical,
+    BIconHouseFill,
+    BIconFilePersonFill,
+    BIconInfoCircleFill
+  }
+})
+export default class Entries extends Vue {}
+</script>
 
 <style lang="scss">
 body {
@@ -34,28 +62,29 @@ body {
 nav {
   background-color: rgb(220, 54, 100);
   position: fixed;
-  display: block;
+  display: flex;
   bottom: 0;
   width: 100%;
   box-shadow: 5px 0 5px gray;
+  justify-content: center;
+  align-items: center;
 
   div {
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-    height: 100%;
-    width: fit-content;
+    padding-top: 5px;
     a {
       display: inline-block;
       font-weight: bold;
       color: #2c3e50;
       border-right: 1px solid black;
-      padding: 0 10px;
+      padding: 0 15px;
       height: 30px;
       line-height: 30px;
       text-align: center;
 
       &.router-link-exact-active {
+        svg {
+          fill: white;
+        }
         color: white;
       }
 
@@ -71,6 +100,7 @@ nav {
   border: none;
 
   svg {
+    fill: black;
     height: 100% !important;
     width: 100% !important;
   }

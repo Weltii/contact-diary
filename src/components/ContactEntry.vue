@@ -1,7 +1,10 @@
 <template>
   <li :class="styles">
     <div class="head">
-      <button v-on:click="setCollapseState">{{ expandText }}</button>
+      <button v-on:click="setCollapseState" class="icon-button">
+        <BIconChevronDown v-if="collapsed" />
+        <BIconChevronUp v-else />
+      </button>
       <div>
         <label for="start-date">Start</label>
         <Datetime
@@ -10,6 +13,7 @@
           format="yyyy-MM-dd HH:mm:ss"
           name="start-date"
           :minute-step="minuteStep"
+          title="Start Date"
         />
       </div>
       <div>
@@ -20,40 +24,51 @@
           format="yyyy-MM-dd HH:mm:ss"
           name="end-date"
           :minute-step="minuteStep"
+          title="End Date"
         />
       </div>
       <div>
         <label for="duration">Duration</label>
         <input
-          type="time"
+          type="text"
           :value="duration"
+          id="duration"
           name="duration"
+          title="Duration"
           required
           disabled
         />
       </div>
 
-      <button class="delete-button" v-on:click="removeContact">
-        Remove Contact
+      <button
+        class="delete-button icon-button"
+        v-on:click="removeContact"
+        title="delete contact entry"
+      >
+        <BIconTrashFill />
       </button>
     </div>
 
     <div class="body">
       <div class="item">
         <div>
-          What did you do?
-          <input
+          <span>What did you do?</span>
+          <textarea
             type="text"
+            placeholder="What did you do?"
             field="activity"
             :value="contact.activity"
             v-on:change="changeFieldName"
+            title="What did you do input field"
           />
         </div>
         <div>
-          Where are you?
+          <span>Where are you?</span>
           <input
             type="text"
             field="location"
+            placeholder="Where are you?"
+            title="Whera are you input field"
             :value="contact.location"
             v-on:change="changeFieldName"
           />
@@ -67,13 +82,31 @@
             :key="index"
             v-on:change="changeContactName"
           >
-            <input type="" :id="index" :value="contact" />
-            <button v-if="index !== 0" v-on:click="removeContactName(index)">
-              REMOVE
+            <input
+              type=""
+              :id="index"
+              :value="contact"
+              placeholder="Who did you meet?"
+              title="Who did you meet input field"
+            />
+            <button
+              :key="index"
+              v-if="index !== 0"
+              v-on:click="removeContactName(index)"
+              class="icon-button"
+              title="Remove contact from contact list"
+            >
+              <BIconTrashFill />
             </button>
           </li>
         </ul>
-        <button v-on:click="addContactName()">+ Contact</button>
+        <button
+          v-on:click="addContactName()"
+          class="icon-button"
+          title="Add contact to contact list"
+        >
+          <BIconPersonPlusFill />
+        </button>
       </div>
     </div>
   </li>
@@ -85,16 +118,27 @@ import { MutationTypes, ContactInformation } from "../store";
 import { Datetime } from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 import { DateTime } from "luxon";
+import {
+  BIconChevronUp,
+  BIconChevronDown,
+  BIconTrashFill,
+  BIconPersonPlusFill
+} from "bootstrap-vue";
 
 @Component({
   components: {
-    Datetime
+    Datetime,
+    BIconChevronUp,
+    BIconChevronDown,
+    BIconTrashFill,
+    BIconPersonPlusFill
   }
 })
 export default class ContactEntry extends Vue {
   @Prop() private contact!: ContactInformation;
   @Prop() private collapsed!: boolean;
   private minuteStep = 5;
+  private readonly iconPath = "../assets/icons/";
 
   changeFieldName(event: any) {
     const value = event.target.value;
@@ -137,8 +181,12 @@ export default class ContactEntry extends Vue {
     return `contact-information ${this.collapsed ? "collapsed" : ""}`;
   }
 
-  get expandText() {
-    return `${this.collapsed ? "Expand" : "Collapse"}`;
+  get expandIcon() {
+    return `${this.collapsed ? "chevron-down" : "chevron-up"}`;
+  }
+
+  get expandAlt() {
+    return `${this.collapsed ? "Expand Icon" : "Collapse Icon"}`;
   }
 
   setCollapseState() {
@@ -146,13 +194,15 @@ export default class ContactEntry extends Vue {
   }
 
   get duration() {
-    const diff =
-      ((this.contact.end ?? new Date().getTime()) - this.contact.start) / 1000;
+    const diff = Math.floor(
+      ((this.contact.end ?? new Date().getTime()) - this.contact.start) / 1000
+    );
     const hour = Math.floor(diff / 3600);
-    const min = (diff % 3600) / 60;
-    const dateString = `${hour < 10 ? "0" + hour : hour}:${
+    const min = Math.floor((diff % 3600) / 60);
+    const dateString = `${hour < 10 ? "0" + hour : hour}h:${
       min < 10 ? "0" + min : min
-    }`;
+    }min`;
+    console.log(diff, hour, min, dateString);
     return dateString;
   }
 
@@ -205,9 +255,14 @@ export default class ContactEntry extends Vue {
   margin-bottom: 0.5rem;
   div,
   input,
-  label {
+  textarea label {
     display: block;
     margin: 0 0.2rem;
+  }
+
+  #duration {
+    width: 70px;
+    color: black;
   }
 }
 
@@ -221,6 +276,19 @@ export default class ContactEntry extends Vue {
 
 .item {
   width: 50%;
+
+  input,
+  textarea,
+  span {
+    margin-bottom: 1px;
+    text-align: left;
+    width: 150px;
+    display: inline-block;
+  }
+
+  textarea {
+    height: 50px;
+  }
 }
 
 .collapsed .body {
@@ -231,13 +299,24 @@ export default class ContactEntry extends Vue {
   list-style-type: none;
   padding: 0;
   li {
-    display: block;
+    display: flex;
     float: left;
     clear: both;
-    height: 20px;
+    align-items: middle;
+    margin-bottom: 10px;
     input {
       width: 150px;
     }
+    button {
+      height: 25px;
+    }
+  }
+}
+
+.icon-button {
+  svg {
+    height: 1rem;
+    width: 1rem;
   }
 }
 </style>

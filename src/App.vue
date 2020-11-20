@@ -6,7 +6,7 @@
     <nav>
       <div>
         <router-link to="/">Home</router-link>
-        <router-link to="/contacts">Contacts</router-link>
+        <router-link to="/entries">Entries</router-link>
         <router-link to="/myself">Myself</router-link>
         <router-link to="/about">About</router-link>
       </div>
@@ -19,7 +19,6 @@ body {
   padding: 0;
   margin: 0;
   margin-bottom: 35px;
-  position: relative;
 }
 
 #app {
@@ -29,8 +28,6 @@ body {
   text-align: center;
   color: #2c3e50;
   max-width: 750px;
-  width: 100%;
-  height: 100%;
   margin: 0 auto;
 }
 
@@ -67,5 +64,37 @@ nav {
       }
     }
   }
+}
+
+.icon-button {
+  background-color: transparent;
+  border: none;
+
+  svg {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  &:hover {
+    svg {
+      fill: #006837;
+    }
+  }
+}
+
+input,
+textarea {
+  height: 25px;
+  border: 1px solid gray;
+  border-radius: 5px;
+
+  &:focus {
+    box-shadow: 0 0 0 1px #006837;
+  }
+}
+
+button {
+  height: 40px;
+  width: 40px;
 }
 </style>

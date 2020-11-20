@@ -9,6 +9,7 @@
           type="datetime"
           format="yyyy-MM-dd HH:mm:ss"
           name="start-date"
+          :minute-step="minuteStep"
         />
       </div>
       <div>
@@ -18,6 +19,7 @@
           type="datetime"
           format="yyyy-MM-dd HH:mm:ss"
           name="end-date"
+          :minute-step="minuteStep"
         />
       </div>
       <div>
@@ -37,7 +39,7 @@
     </div>
 
     <div class="body">
-      <div>
+      <div class="item">
         <div>
           What did you do?
           <input
@@ -57,8 +59,8 @@
           />
         </div>
       </div>
-      <div>
-        <h3>Contacts</h3>
+      <div class="item">
+        <label>Contacts</label>
         <ul class="contact-list">
           <li
             v-for="(contact, index) in contact.contacts"
@@ -92,6 +94,7 @@ import { DateTime } from "luxon";
 export default class ContactEntry extends Vue {
   @Prop() private contact!: ContactInformation;
   @Prop() private collapsed!: boolean;
+  private minuteStep = 5;
 
   changeFieldName(event: any) {
     const value = event.target.value;
@@ -216,16 +219,25 @@ export default class ContactEntry extends Vue {
   transition: 1s ease-in-out;
 }
 
+.item {
+  width: 50%;
+}
+
 .collapsed .body {
   height: 0px;
 }
 
-ul {
+.contact-list {
   list-style-type: none;
   padding: 0;
-}
-li {
-  display: block;
-  margin: 0 10px;
+  li {
+    display: block;
+    float: left;
+    clear: both;
+    height: 20px;
+    input {
+      width: 150px;
+    }
+  }
 }
 </style>

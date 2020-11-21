@@ -202,7 +202,6 @@ export default class ContactEntry extends Vue {
     const dateString = `${hour < 10 ? "0" + hour : hour}h:${
       min < 10 ? "0" + min : min
     }min`;
-    console.log(diff, hour, min, dateString);
     return dateString;
   }
 

@@ -13,21 +13,21 @@ import { ContactInformation, MutationTypes, ContactData } from "../store";
   components: {}
 })
 export default class ContactDetail extends Vue {
-  @Prop() private contactDetail!: ContactData;
+  @Prop() private value!: ContactData;
 
   mounted() {
     const x = new ContactData();
   }
 
   private emitChangeContact(key: string, value: string) {
-    this.$store.commit(MutationTypes.CHANGE_CONTACT_DETAIL, {
+    this.$emit("input", {
       key,
       value
     });
   }
 
   get name() {
-    return this.contactDetail.name;
+    return this.value.name;
   }
 
   set name(value: any) {
@@ -35,7 +35,7 @@ export default class ContactDetail extends Vue {
   }
 
   get phoneNumber() {
-    return this.contactDetail.phoneNumber;
+    return this.value.phoneNumber;
   }
 
   set phoneNumber(value: any) {

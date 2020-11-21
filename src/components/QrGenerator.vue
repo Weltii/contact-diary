@@ -12,9 +12,10 @@ import QRCode from "qrcode";
 
 @Component
 export default class QrGenerator extends Vue {
-  @Prop() private qrCodeData!: string;
+  @Prop() private value!: string;
   @Prop() private showReloadButton!: boolean;
   private can: HTMLCanvasElement;
+  private inp = "text";
 
   constructor() {
     super();
@@ -25,14 +26,12 @@ export default class QrGenerator extends Vue {
     this.run();
   }
 
-  @Watch("qrCodeData")
+  @Watch("value")
   run() {
-    console.log("watch");
     const data =
-      typeof this.qrCodeData != "string"
-        ? JSON.stringify(this.qrCodeData)
-        : this.qrCodeData ?? "Empty";
-    console.log(data);
+      typeof this.value != "string"
+        ? JSON.stringify(this.value)
+        : this.value ?? "Empty";
     QRCode.toCanvas(
       document.querySelector("#qr-generator"),
       data,

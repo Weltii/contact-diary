@@ -1,9 +1,8 @@
 <template>
   <div class="home">
     <h1>Add your contact data and let others scan it.</h1>
-    <ContactDetail :contactDetail="contactData" />
-    <!-- TODO the code should regenerate on changes automatically! -->
-    <QrGenerator :showReloadButton="true" :qrCodeData="contactData" />
+    <ContactDetail v-model="contactData" />
+    <QrGenerator :showReloadButton="false" :value="qrCodeData" />
   </div>
 </template>
 
@@ -19,9 +18,20 @@ import { MutationTypes } from "@/store";
     ContactDetail
   }
 })
-export default class Home extends Vue {
+export default class Myself extends Vue {
   get contactData() {
-    return this.$store.state.myContact;
+    return this.$store.state.profile;
+  }
+
+  set contactData(event: any) {
+    this.$store.commit(MutationTypes.CHANGE_PROFILE_DETAIL, {
+      key: event.key,
+      value: event.value
+    });
+  }
+
+  get qrCodeData() {
+    return JSON.stringify(this.$store.state.profile);
   }
 }
 </script>

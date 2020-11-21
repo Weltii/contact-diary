@@ -36,14 +36,16 @@ export enum MutationTypes {
   INIT_STORE = "INIT_STORE",
   REMOVE_CONTACT = "REMOVE_CONTACT",
   REMOVE_CONTACT_NAME = "REMOVE_CONTACT_NAME",
-  CHANGE_CONTACT_DETAIL = "CHANGE_CONTACT_DETAIL"
+  CHANGE_CONTACT_DETAIL = "CHANGE_CONTACT_DETAIL",
+  CHANGE_PROFILE_DETAIL = "CHANGE_PROFILE_DETAIL"
 }
 
 export default new Vuex.Store({
   state: {
     version: "1.0",
     contacts: {},
-    entries: [new ContactInformation(["Herbert", "von", "Schlechter"])]
+    entries: [new ContactInformation(["Herbert", "von", "Schlechter"])],
+    profile: new ContactData()
   },
   mutations: {
     INIT_STORE(state: any) {
@@ -58,7 +60,8 @@ export default new Vuex.Store({
             const newJson = {
               entries: json["contacts"],
               contacts: [],
-              version: "1.0"
+              version: "1.0",
+              profile: new ContactData()
             };
             this.replaceState(Object.assign(state, newJson));
             localStorage.setItem("store", JSON.stringify(state));
@@ -113,6 +116,15 @@ export default new Vuex.Store({
     REMOVE_CONTACT(state: any, contact: ContactInformation) {
       const index = state.entries.indexOf(contact);
       state.entries.splice(index, 1);
+    },
+    CHANGE_PROFILE_DETAIL(
+      state: any,
+      payload: {
+        key: string;
+        value: string;
+      }
+    ) {
+      state.profile[payload.key] = payload.value;
     }
   },
   actions: {},

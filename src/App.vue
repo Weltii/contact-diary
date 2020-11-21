@@ -11,6 +11,9 @@
         <router-link class="icon-button" to="/entries">
           <BIconJournalMedical title="Contact Journal" />
         </router-link>
+        <router-link class="icon-button" to="/contacts">
+          <BIconJournalText title="Contacts" />
+        </router-link>
         <router-link class="icon-button" to="/myself">
           <BIconFilePersonFill title="Your Profile" />
         </router-link>
@@ -28,7 +31,8 @@ import {
   BIconJournalMedical,
   BIconHouseFill,
   BIconFilePersonFill,
-  BIconInfoCircleFill
+  BIconInfoCircleFill,
+  BIconJournalText
 } from "bootstrap-vue";
 
 @Component({
@@ -36,7 +40,8 @@ import {
     BIconJournalMedical,
     BIconHouseFill,
     BIconFilePersonFill,
-    BIconInfoCircleFill
+    BIconInfoCircleFill,
+    BIconJournalText
   }
 })
 export default class Entries extends Vue {}
@@ -47,6 +52,7 @@ body {
   padding: 0;
   margin: 0;
   margin-bottom: 35px;
+  background-color: rgb(177, 177, 177);
 }
 
 #app {

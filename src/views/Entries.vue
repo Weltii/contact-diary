@@ -1,15 +1,14 @@
 <template>
-  <div class="full-screen">
+  <div>
     <h1>Contacts</h1>
     <ContactEntryList />
-    <button
-      id="add-new-entry-button"
-      v-on:click="addNewContact()"
+    <CreateBottomRightButton
       class="icon-button"
       title="Add new contact entry"
+      @click="addNewContact()"
     >
       <BIconJournalPlus />
-    </button>
+    </CreateBottomRightButton>
   </div>
 </template>
 
@@ -18,11 +17,13 @@ import { Component, Vue } from "vue-property-decorator";
 import ContactEntryList from "@/components/ContactEntryList.vue";
 import { MutationTypes, ContactInformation } from "../store";
 import { BIconJournalPlus } from "bootstrap-vue";
+import CreateBottomRightButton from "../components/CreateBottomRightButton.vue";
 
 @Component({
   components: {
     ContactEntryList,
-    BIconJournalPlus
+    BIconJournalPlus,
+    CreateBottomRightButton
   }
 })
 export default class Entries extends Vue {
@@ -31,26 +32,3 @@ export default class Entries extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.full-screen {
-  height: 100%;
-}
-
-#add-new-entry-button {
-  position: absolute;
-  bottom: 50px;
-  right: 20px;
-  height: 50px;
-  width: 50px;
-  border: 1px solid gray;
-  border-radius: 100%;
-  background-color: rgb(220, 54, 100);
-}
-
-.icon-button {
-  svg {
-    fill: white;
-  }
-}
-</style>

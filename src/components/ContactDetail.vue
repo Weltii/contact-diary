@@ -30,6 +30,7 @@ export default class ContactDetail extends Vue {
 
   private emitChangeContact(key: string, value: string) {
     this.$emit("input", {
+      contact: this.value,
       key,
       value
     });

@@ -2,13 +2,13 @@
 
 import { register } from "register-service-worker";
 
-if (window.location.host.search("localhost") == -1) {
+//const useWorker = window.location.host.search("localhost") == -1;
+const useWorker = true;
+
+if (useWorker) {
   register("/service-worker.js", {
     ready() {
-      console.log(
-        "App is being served from cache by a service worker.\n" +
-          "For more details, visit https://goo.gl/AFskqB"
-      );
+      console.log("App is being served from cache by a service worker.");
     },
     registered() {
       console.log("Service worker has been registered.");

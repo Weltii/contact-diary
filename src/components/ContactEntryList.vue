@@ -8,7 +8,7 @@
       :id="index"
       :key="contact.id"
       :contact="contact"
-      :collapsed="index != 0"
+      :index="index"
     />
   </ul>
 </template>

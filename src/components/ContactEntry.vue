@@ -136,9 +136,14 @@ import {
 })
 export default class ContactEntry extends Vue {
   @Prop() private contact!: ContactInformation;
-  @Prop() private collapsed!: boolean;
+  @Prop() private index!: number;
+  private collapsed = false;
   private minuteStep = 5;
   private readonly iconPath = "../assets/icons/";
+
+  mounted() {
+    this.collapsed = this.index > 0;
+  }
 
   changeFieldName(event: any) {
     const value = event.target.value;

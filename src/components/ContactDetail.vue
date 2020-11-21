@@ -1,7 +1,16 @@
 <template>
   <div>
-    <input type="text" v-model="name" placeholder="Name" />
-    <input type="text" v-model="phoneNumber" placeholder="Phone-Number" />
+    <label for="name">Name</label>
+    <input type="text" name="name" v-model="name" placeholder="Name" />
+    <label for="phonenumber">Phone Number</label>
+    <input
+      type="text"
+      name="phonenumber"
+      v-model="phoneNumber"
+      placeholder="Phone-Number"
+    />
+    <label for="email">E-Mail</label>
+    <input type="email" name="email" v-model="email" placeholder="E-Mail" />
   </div>
 </template>
 
@@ -41,8 +50,22 @@ export default class ContactDetail extends Vue {
   set phoneNumber(value: any) {
     this.emitChangeContact("phoneNumber", value);
   }
+
+  get email() {
+    return this.value.email;
+  }
+
+  set email(value: any) {
+    this.emitChangeContact("email", value);
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+input,
+label {
+  text-align: left;
+  display: blocK;
+}
+</style>

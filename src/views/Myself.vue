@@ -1,8 +1,10 @@
 <template>
-  <div class="home">
+  <div>
     <h1>Add your contact data and let others scan it.</h1>
-    <ContactDetail v-model="contactData" />
-    <QrGenerator :showReloadButton="false" :value="qrCodeData" />
+    <div class="content">
+      <ContactDetail v-model="contactData" />
+      <QrGenerator :showReloadButton="false" :value="qrCodeData" />
+    </div>
   </div>
 </template>
 
@@ -36,4 +38,10 @@ export default class Myself extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+</style>

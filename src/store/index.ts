@@ -24,7 +24,8 @@ export class ContactInformation {
 export class ContactData {
   constructor(
     public name: string = "Empty",
-    public phoneNumber: string = "-"
+    public phoneNumber: string = "-",
+    public email: string = "-"
   ) {}
 }
 

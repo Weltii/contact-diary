@@ -14,12 +14,10 @@ import QRCode from "qrcode";
 export default class QrGenerator extends Vue {
   @Prop() private value!: string;
   @Prop() private showReloadButton!: boolean;
-  private can: HTMLCanvasElement;
   private inp = "text";
 
   constructor() {
     super();
-    this.can = document.querySelector("#qr-generator") as HTMLCanvasElement;
   }
 
   mounted() {

@@ -23,17 +23,10 @@ self.addEventListener("install", function(event) {
 });
 
 self.addEventListener("fetch", event => {
-  event.responseWith(
+  console.log("Fetcehed resource", event.request.url);
+  event.respondWith(
     caches.match(event.request).then(response => {
-      return (
-        response ||
-        fetch(event.request).then(response => {
-          return caches.open(versionName).then(cache => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        })
-      );
+      return response;
     })
   );
 });

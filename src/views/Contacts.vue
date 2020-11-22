@@ -1,21 +1,58 @@
 <template>
   <div>
     <h1>Known Contacts</h1>
-    <h2>New Contact</h2>
-    <ContactDetail v-model="newContact" />
-    <button @click="addNewContact">Add</button>
 
     <ul>
       <li v-for="contact in contacts" :key="contact.id">
         <p>{{ contact.name }}</p>
+        <button @click="openDeleteContactDialog(contact)">
+          Delete this contact
+        </button>
       </li>
       <li v-if="contacts.length === 0">
         Nobody is in here!
       </li>
     </ul>
-    <CreateBottomRightButton class="icon-button" title="Add new contact entry">
+
+    <CreateBottomRightButton
+      class="icon-button"
+      title="Add new contact entry"
+      @click="openNewContactDialog"
+    >
       <BIconPersonPlusFill />
     </CreateBottomRightButton>
+
+    <BaseModal
+      v-show="isDialogVisible"
+      @close="closeDialog"
+      title="Delete Contact"
+    >
+      <div slot="body">
+        Du you really want to delete {{ chosenContact.name || "Nobody" }}?
+      </div>
+      <div slot="footer">
+        <button @click="closeDialog">
+          No!
+        </button>
+        <button @click="deleteContact(chosenContact)">
+          Yes!
+        </button>
+      </div>
+    </BaseModal>
+    <BaseModal
+      v-show="isCreateContactDialogVisible"
+      @close="closeNewContactDialog"
+      title="Create Contact"
+    >
+      <div slot="body">
+        <ContactDetail v-model="newContact" />
+      </div>
+      <div slot="footer">
+        <button @click="addNewContact">
+          Add this contact
+        </button>
+      </div>
+    </BaseModal>
   </div>
 </template>
 
@@ -26,16 +63,29 @@ import ContactDetail from "../components/ContactDetail.vue";
 import { BIconPersonPlusFill } from "bootstrap-vue";
 import CreateBottomRightButton from "../components/CreateBottomRightButton.vue";
 import { ContactData, MutationTypes } from "@/store";
+import BaseModal from "../components/dialog/BaseDialog.vue";
 
 @Component({
   components: {
     ContactDetail,
     BIconPersonPlusFill,
-    CreateBottomRightButton
+    CreateBottomRightButton,
+    BaseModal
   }
 })
-export default class Myself extends Vue {
+export default class Contacts extends Vue {
   private _newContact = new ContactData();
+  private isCreateContactDialogVisible = false;
+  private isDialogVisible = false;
+  private chosenContact = new ContactData();
+
+  showDialog() {
+    this.isDialogVisible = true;
+  }
+
+  closeDialog() {
+    this.isDialogVisible = false;
+  }
 
   get newContact() {
     if (!this._newContact) {
@@ -58,16 +108,38 @@ export default class Myself extends Vue {
     }
   }
 
+  deleteContact(contact: ContactData) {
+    this.$store.commit(
+      MutationTypes.REMOVE_CONTACT_FROM_CONTACT_LIST,
+      contact.id
+    );
+    this.closeDialog();
+  }
+
   addNewContact() {
     this.$store.commit(
       MutationTypes.ADD_NEW_CONTACT_TO_CONTACT_LIST,
       this._newContact
     );
     this._newContact = new ContactData();
+    this.closeNewContactDialog();
   }
 
   get contacts() {
     return (this.$store.state.contacts as Array<any>).concat([]);
+  }
+
+  openDeleteContactDialog(contact: ContactData) {
+    this.chosenContact = contact;
+    this.showDialog();
+  }
+
+  openNewContactDialog() {
+    this.isCreateContactDialogVisible = true;
+  }
+
+  closeNewContactDialog() {
+    this.isCreateContactDialogVisible = false;
   }
 }
 </script>

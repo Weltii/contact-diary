@@ -1,6 +1,13 @@
 <template>
   <div class="about">
     <h1>This is an about page</h1>
+
+    <h2>Used Community-Components</h2>
+    <ul>
+      <li>
+        <a href="https://www.npmjs.com/package/vue-datetime">vue-datetime</a>
+      </li>
+    </ul>
   </div>
 </template>
 

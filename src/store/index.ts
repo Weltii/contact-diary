@@ -45,14 +45,14 @@ export enum MutationTypes {
   CHANGE_CONTACT_DATA_IN_CONTACT_LIST = "CHANGE_CONTACT_DATA_IN_CONTACT_LIST"
 }
 
-const getFrom = function(list: Array<any>, key: string, value: string) {
+export function getFrom(list: Array<any>, key: string, value: string) {
   list.forEach(obj => {
     if (obj[key] == value) {
       return obj;
     }
   });
   return null;
-};
+}
 
 export default new Vuex.Store({
   state: {
@@ -148,10 +148,10 @@ export default new Vuex.Store({
       }
     },
     REMOVE_CONTACT_FROM_CONTACT_LIST(state: any, id: string) {
-      const contact = getFrom(state, "id", id);
-      if (contact) {
-        const index = state.contacts.indexOf(contact);
-        state.contacts.splice(index, 1);
+      for (const index in state.contacts) {
+        if (state.contacts[index].id == id) {
+          state.contacts.splice(index, 1);
+        }
       }
     },
     CHANGE_CONTACT_DATA_IN_CONTACT_LIST(
@@ -162,7 +162,7 @@ export default new Vuex.Store({
         value: string;
       }
     ) {
-      const contact = getFrom(state, "id", payload.contactId);
+      const contact = getFrom(state.contacts, "id", payload.contactId);
       if (contact) {
         const index = state.contacts.indexOf(contact);
         state.contacts[index][payload.key] = payload.value;

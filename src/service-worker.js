@@ -5,12 +5,13 @@ const versionName = `contact-diary-cache-${version}`;
 
 self.addEventListener("install", function(event) {
   const arr = self.__precacheManifest.map(obj => {
+    console.log(obj);
     return obj.url;
   });
   event.waitUntil(
     caches
       .open(versionName)
-      .then(function(cache) {
+      .then(cache => {
         return cache.addAll(arr);
       })
       .then(() => {
@@ -23,16 +24,25 @@ self.addEventListener("install", function(event) {
 });
 
 self.addEventListener("fetch", event => {
-  event.responseWith(
+  event.respondWith(
     caches.match(event.request).then(response => {
       return (
         response ||
-        fetch(event.request).then(response => {
-          return caches.open(versionName).then(cache => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        })
+        fetch(event.request)
+          .then(resp => {
+            caches
+              .open(versionName)
+              .then(cache => {
+                cache.put(event.request, resp.clone());
+              })
+              .catch(err => {
+                console.error(err);
+              });
+            return resp;
+          })
+          .catch(err => {
+            console.error(err);
+          })
       );
     })
   );

@@ -6,7 +6,7 @@ let manifestPath;
 
 files.forEach(path => {
   if (path.search("precache-manifest") == 0) {
-    manifestPath = `dist/${path}`;
+    manifestPath = `./${path}`;
   }
 });
 

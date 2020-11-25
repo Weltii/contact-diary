@@ -52,7 +52,7 @@ body {
   padding: 0;
   margin: 0;
   margin-bottom: 35px;
-  background-color: rgb(177, 177, 177);
+  background-color: #c4c3c3;
 }
 
 #app {

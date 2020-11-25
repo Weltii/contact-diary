@@ -4,9 +4,13 @@
 
     <ul>
       <li v-for="contact in contacts" :key="contact.id">
-        <p>{{ contact.name }}</p>
-        <button @click="openDeleteContactDialog(contact)">
-          Delete this contact
+        <ContactEntry :contact="contact"></ContactEntry>
+        <button
+          class="icon-button"
+          @click="openDeleteContactDialog(contact)"
+          :title="getTitleForDeleteButton(contact.name)"
+        >
+          <BIconTrashFill />
         </button>
       </li>
       <li v-if="contacts.length === 0">
@@ -60,17 +64,20 @@
 import { Component, Vue } from "vue-property-decorator";
 import QrGenerator from "../components/QrGenerator.vue";
 import ContactDetail from "../components/ContactDetail.vue";
-import { BIconPersonPlusFill } from "bootstrap-vue";
+import { BIconPersonPlusFill, BIconTrashFill } from "bootstrap-vue";
 import CreateBottomRightButton from "../components/CreateBottomRightButton.vue";
 import { ContactData, MutationTypes } from "@/store";
 import BaseModal from "../components/dialog/BaseDialog.vue";
+import ContactEntry from "../components/contact-list/ContactEntry.vue";
 
 @Component({
   components: {
     ContactDetail,
     BIconPersonPlusFill,
+    BIconTrashFill,
     CreateBottomRightButton,
-    BaseModal
+    BaseModal,
+    ContactEntry
   }
 })
 export default class Contacts extends Vue {
@@ -141,6 +148,10 @@ export default class Contacts extends Vue {
   closeNewContactDialog() {
     this.isCreateContactDialogVisible = false;
   }
+
+  getTitleForDeleteButton(contactName: string) {
+    return `delete ${contactName}`;
+  }
 }
 </script>
 
@@ -153,5 +164,14 @@ export default class Contacts extends Vue {
 
 ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    margin: 0.2rem;
+  }
 }
 </style>

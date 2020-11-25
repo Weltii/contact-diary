@@ -45,7 +45,7 @@ export default class Myself extends Vue {
   background-color: #00000060;
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   margin: 0;
 }
 

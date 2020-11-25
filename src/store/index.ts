@@ -23,10 +23,10 @@ export class ContactInformation {
 
 export class ContactData {
   constructor(
-    public id: string = genId(),
     public name: string = "Empty",
     public phoneNumber: string = "-",
-    public email: string = "-"
+    public email: string = "-",
+    public id: string = genId()
   ) {}
 }
 

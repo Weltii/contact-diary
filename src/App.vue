@@ -14,6 +14,9 @@
         <router-link class="icon-button" to="/contacts">
           <BIconJournalText title="Contacts" />
         </router-link>
+        <router-link class="icon-button" to="/contact-scanner">
+          <BIconCameraFill title="Contact Scanner" />
+        </router-link>
         <router-link class="icon-button" to="/myself">
           <BIconFilePersonFill title="Your Profile" />
         </router-link>
@@ -32,7 +35,8 @@ import {
   BIconHouseFill,
   BIconFilePersonFill,
   BIconInfoCircleFill,
-  BIconJournalText
+  BIconJournalText,
+  BIconCameraFill
 } from "bootstrap-vue";
 
 @Component({
@@ -41,7 +45,8 @@ import {
     BIconHouseFill,
     BIconFilePersonFill,
     BIconInfoCircleFill,
-    BIconJournalText
+    BIconJournalText,
+    BIconCameraFill
   }
 })
 export default class Entries extends Vue {}

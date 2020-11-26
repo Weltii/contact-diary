@@ -47,6 +47,7 @@ export default class Myself extends Vue {
   justify-content: center;
   align-items: center;
   margin: 0;
+  padding: 0;
 }
 
 .modal {

@@ -21,6 +21,16 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/Myself.vue")
   },
   {
+    path: "/contacts",
+    name: "contacts",
+    component: () => import("../views/Contacts.vue")
+  },
+  {
+    path: "/contact-scanner",
+    name: "Contact Scanner",
+    component: () => import("../views/ContactScanner.vue")
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting

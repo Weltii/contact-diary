@@ -14,10 +14,20 @@ import QRCode from "qrcode";
 export default class QrGenerator extends Vue {
   @Prop() private value!: string;
   @Prop() private showReloadButton!: boolean;
+  @Prop() private backgroundColor!: string;
+  @Prop() private foregroundColor!: string;
   private inp = "text";
 
   constructor() {
     super();
+  }
+
+  get background() {
+    return this.backgroundColor || "#fff";
+  }
+
+  get foreground() {
+    return this.foregroundColor || "#000";
   }
 
   mounted() {
@@ -33,6 +43,12 @@ export default class QrGenerator extends Vue {
     QRCode.toCanvas(
       document.querySelector("#qr-generator"),
       data,
+      {
+        color: {
+          dark: this.foreground,
+          light: this.background
+        }
+      },
       (err: any) => {
         if (err) console.log(err);
       }

@@ -3,7 +3,11 @@
     <h1>Add your contact data and let others scan it.</h1>
     <div class="content">
       <ContactDetail v-model="contactData" />
-      <QrGenerator :showReloadButton="false" :value="qrCodeData" />
+      <QrGenerator
+        :showReloadButton="false"
+        :value="qrCodeData"
+        :backgroundColor="backgroundColor"
+      />
     </div>
   </div>
 </template>
@@ -21,6 +25,7 @@ import { MutationTypes } from "@/store";
   }
 })
 export default class Myself extends Vue {
+  private backgroundColor = "#c4c3c3";
   get contactData() {
     return this.$store.state.profile;
   }

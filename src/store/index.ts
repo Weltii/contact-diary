@@ -25,7 +25,8 @@ export class ContactData {
   constructor(
     public name: string = "Empty",
     public phoneNumber: string = "-",
-    public email: string = "-"
+    public email: string = "-",
+    public id: string = genId()
   ) {}
 }
 
@@ -38,13 +39,25 @@ export enum MutationTypes {
   REMOVE_CONTACT = "REMOVE_CONTACT",
   REMOVE_CONTACT_NAME = "REMOVE_CONTACT_NAME",
   CHANGE_CONTACT_DETAIL = "CHANGE_CONTACT_DETAIL",
-  CHANGE_PROFILE_DETAIL = "CHANGE_PROFILE_DETAIL"
+  CHANGE_PROFILE_DETAIL = "CHANGE_PROFILE_DETAIL",
+  ADD_NEW_CONTACT_TO_CONTACT_LIST = "ADD_NEW_CONTACT_TO_CONTACT_LIST",
+  REMOVE_CONTACT_FROM_CONTACT_LIST = "REMOVE_CONTACT_FROM_CONTACT_LIST",
+  CHANGE_CONTACT_DATA_IN_CONTACT_LIST = "CHANGE_CONTACT_DATA_IN_CONTACT_LIST"
+}
+
+export function getFrom(list: Array<any>, key: string, value: string) {
+  list.forEach(obj => {
+    if (obj[key] == value) {
+      return obj;
+    }
+  });
+  return null;
 }
 
 export default new Vuex.Store({
   state: {
     version: "1.0",
-    contacts: {},
+    contacts: [],
     entries: [new ContactInformation(["Herbert", "von", "Schlechter"])],
     profile: new ContactData()
   },
@@ -126,6 +139,34 @@ export default new Vuex.Store({
       }
     ) {
       state.profile[payload.key] = payload.value;
+    },
+    ADD_NEW_CONTACT_TO_CONTACT_LIST(state: any, contact: ContactData) {
+      if (!state.contacts.includes(contact)) {
+        state.contacts.push(contact);
+      } else {
+        console.error("Contact is already known");
+      }
+    },
+    REMOVE_CONTACT_FROM_CONTACT_LIST(state: any, id: string) {
+      for (const index in state.contacts) {
+        if (state.contacts[index].id == id) {
+          state.contacts.splice(index, 1);
+        }
+      }
+    },
+    CHANGE_CONTACT_DATA_IN_CONTACT_LIST(
+      state: any,
+      payload: {
+        contactId: string;
+        key: string;
+        value: string;
+      }
+    ) {
+      const contact = getFrom(state.contacts, "id", payload.contactId);
+      if (contact) {
+        const index = state.contacts.indexOf(contact);
+        state.contacts[index][payload.key] = payload.value;
+      }
     }
   },
   actions: {},
